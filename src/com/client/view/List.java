@@ -6,16 +6,28 @@ package com.client.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 
-public class List extends JFrame{
+public class List extends JFrame implements ActionListener,MouseListener{
 
 	//定义需要的组件，3张卡片
+	CardLayout c1;
 	
 	//处理第一张卡片
 	JPanel jphy1,jphy2,jphy3;
 	JButton jphy_jb1,jphy_jb2,jphy_jb3;
 	JScrollPane jsp1;
+	
+	//处理第2张卡片
+	JPanel jpmsr1,jpmsr2,jpmsr3;
+	JButton jpmsr_jb1,jpmsr_jb2,jpmsr_jb3;
+	JScrollPane jsp2;	
+	
+	
 	
 	
 	
@@ -31,7 +43,9 @@ public class List extends JFrame{
 		
 		jphy_jb1=new JButton("我的好友");
 		
+		
 		jphy_jb2=new JButton("陌生人");
+		jphy_jb2.addActionListener(this);
 		
 		jphy_jb3=new JButton("黑名单");
 		
@@ -44,7 +58,9 @@ public class List extends JFrame{
 		int i=0;
 		for(JLabel jb:jbls){
 			jb=new JLabel(++i+"",new ImageIcon("images/1.png"),JLabel.LEFT);
+			jb.addMouseListener(this);
 			jphy2.add(jb);
+			
 		}
 		
 //		for(int i=0;i<jbls.length;i++){
@@ -66,12 +82,109 @@ public class List extends JFrame{
 		jphy1.add(jsp1,"Center");
 		jphy1.add(jphy3,"South");
 		
-		this.add(jphy1,"Center");
+		//处理第二张卡片
+		
+		
+		jpmsr_jb1=new JButton("我的好友");
+		jpmsr_jb1.addActionListener(this);
+		jpmsr_jb2=new JButton("陌生人");
+		
+		jpmsr_jb3=new JButton("黑名单");
+		
+		jpmsr1=new JPanel(new BorderLayout());
+		//假定有50个好友
+		jpmsr2=new JPanel(new GridLayout(50, 1,4,4));
+		
+		//给jphy2,初始化50好友
+		JLabel[] jbls2=new JLabel[20];
+
+		
+		for(int j=0;j<jbls2.length;j++){
+			jbls2[j]=new JLabel(j+1+"",new ImageIcon("images/1.png"),JLabel.LEFT);
+			jbls2[j].addMouseListener(this);
+			jpmsr2.add(jbls2[j]);
+		}
+		
+		
+		jpmsr3=new JPanel(new GridLayout(2,1));
+		
+		jpmsr3.add(jpmsr_jb1);
+		jpmsr3.add(jpmsr_jb2);
+		
+		
+		jsp2=new JScrollPane(jpmsr2);
+		
+		//对jphy1初始化
+		jpmsr1.add(jpmsr3,"North");
+		jpmsr1.add(jsp2,"Center");
+		jpmsr1.add(jpmsr_jb3,"South");		
+		
+		
+		
+		c1=new CardLayout();
+	
+		this.setLayout(c1);
+		this.add(jphy1,"1");
+		this.add(jpmsr1,"2");
+		
 		this.setTitle("我的QQ");
+		
+		
+		
 		this.setSize(200,500);
 		this.setLocation(1000, 500);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource()==jpmsr_jb1){
+			c1.show(this.getContentPane(), "1");
+		}
+		if(e.getSource()==jphy_jb2){
+			c1.show(this.getContentPane(), "2");
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		//响应用户双击事件，并得到好友的编号
+		if(e.getClickCount()==2){
+			//得到给好友的编号
+			String friendNo=((JLabel)e.getSource()).getText();
+			System.out.println(friendNo);
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		JLabel jl=(JLabel)e.getSource();
+		jl.setForeground(Color.red);
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		JLabel jl=(JLabel)e.getSource();
+		jl.setForeground(Color.black);
 		
 	}
 
