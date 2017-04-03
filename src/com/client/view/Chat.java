@@ -3,12 +3,8 @@
  */
 
 package com.client.view;
-
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
+
 
 import javax.swing.*;
 
