@@ -156,7 +156,7 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		if(e.getClickCount()==2){
 			//得到给好友的编号
 			String friendNo=((JLabel)e.getSource()).getText();
-			System.out.println(friendNo);
+			new Chat(friendNo);
 		}
 	}
 
