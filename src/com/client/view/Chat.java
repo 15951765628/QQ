@@ -3,9 +3,8 @@
  */
 
 package com.client.view;
+
 import java.awt.event.*;
-
-
 import javax.swing.*;
 
 public class Chat extends JFrame implements MouseListener,ActionListener{
