@@ -8,11 +8,16 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.swing.*;
 
 import com.client.model.ClientConServer;
 import com.client.model.ClientUser;
+import com.client.tools.ManageClientConServerThread;
+import com.common.Message;
+import com.common.MessageType;
 import com.common.User;
 
 public class Login extends JFrame implements ActionListener{
@@ -116,6 +121,20 @@ public class Login extends JFrame implements ActionListener{
 			u.setName(jp2_jtf.getText().trim());
 			u.setPassword(new String(jp2_jpf.getPassword()));
 			if(cu.checkUser(u)){
+				//发送一个请求在线好友的请求包
+				try {
+					ObjectOutputStream oos=new ObjectOutputStream
+							(ManageClientConServerThread.getClientConServerThread(u.getName()).getS().getOutputStream());
+					//做一个Message
+					Message m=new Message();
+					m.setMesType(MessageType.mes_get_onLineFriends);
+					oos.writeObject(m);
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				new List(u.getName());
 				this.dispose();//关掉当前窗口
 			}else{

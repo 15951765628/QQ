@@ -16,7 +16,7 @@ import com.client.model.ClientConServer;
 import com.client.tools.ManageClientConServerThread;
 import com.common.Message;
 
-public class Chat extends JFrame implements MouseListener,ActionListener{
+public class Chat extends JFrame implements MouseListener,ActionListener,KeyListener{
 	
 	JTextArea jta;
 	JTextField jtf;
@@ -45,6 +45,7 @@ public class Chat extends JFrame implements MouseListener,ActionListener{
 		jp.add(jtf);
 		jp.add(jb);
 		
+		this.addKeyListener(this);
 		this.add(jta,"Center");
 		this.add(jp, "South");
 		this.setTitle(id+"正在和"+friend+"聊天");
@@ -68,30 +69,11 @@ public class Chat extends JFrame implements MouseListener,ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==jb){
-			//用户端点击了发送按钮
-			Message m=new Message();
-			m.setSender(id);
-			m.setGetter(friend);
-			m.setCon(jtf.getText().trim());
-			m.setSendTime(new java.util.Date().toString());
-			//发送给服务器
-			try {
-				ObjectOutputStream oos=new ObjectOutputStream
-						(ManageClientConServerThread.getClientConServerThread(id).getS().getOutputStream());
-				oos.writeObject(m);
-				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}finally{
-				jtf.setText("");
-			}
-			
-			
-			
-			
+			sendMes();
 		}
 	}
+
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -123,6 +105,47 @@ public class Chat extends JFrame implements MouseListener,ActionListener{
 		
 	}
 
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getKeyCode()==13){
+			sendMes();
+		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	private void sendMes() {
+		//用户端点击了发送按钮
+		Message m=new Message();
+		m.setSender(id);
+		m.setGetter(friend);
+		m.setCon(jtf.getText().trim());
+		m.setSendTime(new java.util.Date().toString());
+		//发送给服务器
+		try {
+			ObjectOutputStream oos=new ObjectOutputStream
+					(ManageClientConServerThread.getClientConServerThread(id).getS().getOutputStream());
+			oos.writeObject(m);
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}finally{
+			jtf.setText("");
+		}
+	}
 //	@Override
 //	public void run() {
 //		// TODO Auto-generated method stub
