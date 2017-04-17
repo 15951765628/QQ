@@ -113,10 +113,10 @@ public class Login extends JFrame implements ActionListener{
 		if(e.getSource()==jp1_jb1){
 			ClientUser cu=new ClientUser();
 			User u=new User();
-			u.setName(jp2_jl1.getText().trim());
-			u.setPassword(jp2_jl2.getText().trim());
+			u.setName(jp2_jtf.getText().trim());
+			u.setPassword(new String(jp2_jpf.getPassword()));
 			if(cu.checkUser(u)){
-				new List();
+				new List(u.getName());
 				this.dispose();//关掉当前窗口
 			}else{
 				JOptionPane.showMessageDialog(this,"用户名密码错误!");

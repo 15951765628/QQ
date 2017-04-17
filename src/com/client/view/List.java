@@ -33,10 +33,10 @@ public class List extends JFrame implements ActionListener,MouseListener{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		List l=new List();
+//		List l=new List();
 	}
 	
-	public List(){
+	public List(String id){
 		
 		//处理第一张卡片
 		
@@ -127,12 +127,12 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		this.add(jphy1,"1");
 		this.add(jpmsr1,"2");
 		
-		this.setTitle("我的QQ");
+		this.setTitle(id);
 		
 		
 		
 		this.setSize(200,500);
-		this.setLocation(1000, 500);
+		this.setLocation(500, 500);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -156,7 +156,9 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		if(e.getClickCount()==2){
 			//得到给好友的编号
 			String friendNo=((JLabel)e.getSource()).getText();
-			new Chat(friendNo);
+			Chat chat=new Chat(this.getTitle(),friendNo);
+			Thread t=new Thread(chat);
+			t.start();
 		}
 	}
 
