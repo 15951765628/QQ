@@ -47,6 +47,7 @@ public class ClientConServerThread extends Thread{
 					String con=m.getCon();
 					String friends[]=con.split(" ");
 					String getter=m.getGetter();
+					System.out.println(getter+"请求好友");
 					//修改相应的好友列表
 					List list = ManageList.getList(getter);
 					//更新在线好友

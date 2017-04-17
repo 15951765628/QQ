@@ -15,7 +15,9 @@ import javax.swing.*;
 
 import com.client.model.ClientConServer;
 import com.client.model.ClientUser;
+import com.client.tools.ManageChat;
 import com.client.tools.ManageClientConServerThread;
+import com.client.tools.ManageList;
 import com.common.Message;
 import com.common.MessageType;
 import com.common.User;
@@ -123,23 +125,27 @@ public class Login extends JFrame implements ActionListener{
 			if(cu.checkUser(u)){
 				//发送一个请求在线好友的请求包
 				try {
+					//把创建好友的语句提前
+					List list=new List(u.getName());
+					ManageList.addList(u.getName(),list);
+					
 					ObjectOutputStream oos=new ObjectOutputStream
 							(ManageClientConServerThread.getClientConServerThread(u.getName()).getS().getOutputStream());
 					//做一个Message
 					Message m=new Message();
 					m.setMesType(MessageType.mes_get_onLineFriends);
 					
-					//致命我要的是这个QQ的好友情况
-					m.setSender(u.getName());
+					//指明我要的是这个QQ的好友情况
+					m.setGetter(u.getName());
 					
 					oos.writeObject(m);
 					
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
-				new List(u.getName());
+				
 				this.dispose();//关掉当前窗口
 			}else{
 				JOptionPane.showMessageDialog(this,"用户名密码错误!");
