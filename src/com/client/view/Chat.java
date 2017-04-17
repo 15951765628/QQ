@@ -13,9 +13,10 @@ import java.io.ObjectOutputStream;
 import javax.swing.*;
 
 import com.client.model.ClientConServer;
+import com.client.tools.ManageClientConServerThread;
 import com.common.Message;
 
-public class Chat extends JFrame implements MouseListener,ActionListener,Runnable{
+public class Chat extends JFrame implements MouseListener,ActionListener{
 	
 	JTextArea jta;
 	JTextField jtf;
@@ -54,6 +55,14 @@ public class Chat extends JFrame implements MouseListener,ActionListener,Runnabl
 		
 		
 	}
+	
+	//写一个方法，让他显示消息
+	public void showMessage(Message m)
+	{
+		String info=m.getSender()+"对"+m.getGetter()+"说："+m.getCon()+"\r\n";
+		this.jta.append(info);
+	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -67,7 +76,8 @@ public class Chat extends JFrame implements MouseListener,ActionListener,Runnabl
 			m.setSendTime(new java.util.Date().toString());
 			//发送给服务器
 			try {
-				ObjectOutputStream oos=new ObjectOutputStream(ClientConServer.s.getOutputStream());
+				ObjectOutputStream oos=new ObjectOutputStream
+						(ManageClientConServerThread.getClientConServerThread(id).getS().getOutputStream());
 				oos.writeObject(m);
 				
 			} catch (IOException e1) {
@@ -113,25 +123,25 @@ public class Chat extends JFrame implements MouseListener,ActionListener,Runnabl
 		
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		while(true){
-			//读取Object[如果读不到就等待，]
-			try {
-				ObjectInputStream ois=new ObjectInputStream(ClientConServer.s.getInputStream());
-				Message m=(Message)ois.readObject();
-				//显示
-				String info=m.getSender()+"对"+m.getGetter()+"说："+m.getCon()+"\r\n";
-				this.jta.append(info);
-						
-				
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+//	@Override
+//	public void run() {
+//		// TODO Auto-generated method stub
+//		while(true){
+//			//读取Object[如果读不到就等待，]
+//			try {
+//				ObjectInputStream ois=new ObjectInputStream(ClientConServer.s.getInputStream());
+//				Message m=(Message)ois.readObject();
+//				//显示
+//				String info=m.getSender()+"对"+m.getGetter()+"说："+m.getCon()+"\r\n";
+//				this.jta.append(info);
+//						
+//				
+//				
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 }

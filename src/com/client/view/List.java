@@ -5,6 +5,9 @@
 package com.client.view;
 
 import javax.swing.*;
+
+import com.client.tools.ManageChat;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +30,8 @@ public class List extends JFrame implements ActionListener,MouseListener{
 	JButton jpmsr_jb1,jpmsr_jb2,jpmsr_jb3;
 	JScrollPane jsp2;	
 	
+	private String id;
+	
 	
 	
 	
@@ -40,7 +45,7 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		
 		//处理第一张卡片
 		
-		
+		this.id=id;
 		jphy_jb1=new JButton("我的好友");
 		
 		
@@ -58,6 +63,11 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		int i=0;
 		for(JLabel jb:jbls){
 			jb=new JLabel(++i+"",new ImageIcon("images/1.png"),JLabel.LEFT);
+			jb.setEnabled(false);
+			
+			if(jb.getText().equals(id)){
+				jb.setEnabled(true);
+			}
 			jb.addMouseListener(this);
 			jphy2.add(jb);
 			
@@ -157,8 +167,8 @@ public class List extends JFrame implements ActionListener,MouseListener{
 			//得到给好友的编号
 			String friendNo=((JLabel)e.getSource()).getText();
 			Chat chat=new Chat(this.getTitle(),friendNo);
-			Thread t=new Thread(chat);
-			t.start();
+			//把聊天界面接入到管理类
+			ManageChat.addChat(this.getTitle()+" "+friendNo, chat);
 		}
 	}
 
