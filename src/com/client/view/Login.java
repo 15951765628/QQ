@@ -6,10 +6,16 @@ package com.client.view;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class Login extends JFrame{
+import com.client.model.ClientConServer;
+import com.client.model.ClientUser;
+import com.common.User;
+
+public class Login extends JFrame implements ActionListener{
 
 	//定义北部需要的组件
 	
@@ -87,7 +93,7 @@ public class Login extends JFrame{
 		//处理南部
 		jp1=new JPanel();
 		jp1_jb1=new JButton(new ImageIcon("images/dl.png"));
-		
+		jp1_jb1.addActionListener(this);
 		//把三个按钮放到jp1
 		jp1.add(jp1_jb1);
 		
@@ -98,6 +104,24 @@ public class Login extends JFrame{
 		this.setSize(350,240);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		//如果用户点击的是的登录
+		if(e.getSource()==jp1_jb1){
+			ClientUser cu=new ClientUser();
+			User u=new User();
+			u.setName(jp2_jl1.getText().trim());
+			u.setPassword(jp2_jl2.getText().trim());
+			if(cu.checkUser(u)){
+				new List();
+				this.dispose();//关掉当前窗口
+			}else{
+				JOptionPane.showMessageDialog(this,"用户名密码错误!");
+			}
+		}
 	}
 
 }
