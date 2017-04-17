@@ -7,6 +7,7 @@ package com.client.view;
 import javax.swing.*;
 
 import com.client.tools.ManageChat;
+import com.common.Message;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,8 @@ public class List extends JFrame implements ActionListener,MouseListener{
 	JButton jpmsr_jb1,jpmsr_jb2,jpmsr_jb3;
 	JScrollPane jsp2;	
 	
+	JLabel[] jbls;
+	
 	private String id;
 	
 	
@@ -40,6 +43,18 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		// TODO Auto-generated method stub
 //		List l=new List();
 	}
+	
+	//更新在线的好友
+	public void update(Message m)
+	{
+		String onLineFriends[]=m.getCon().split(" ");
+		for(int i=0;i<onLineFriends.length;i++){
+			jbls[Integer.parseInt(onLineFriends[i])-1].setEnabled(true);;
+		}
+		
+	}
+	
+	
 	
 	public List(String id){
 		
@@ -59,7 +74,7 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		jphy2=new JPanel(new GridLayout(50, 1,4,4));
 		
 		//给jphy2,初始化50好友
-		JLabel[] jbls=new JLabel[50];
+		jbls=new JLabel[50];
 		int i=0;
 		for(JLabel jb:jbls){
 			jb=new JLabel(++i+"",new ImageIcon("images/1.png"),JLabel.LEFT);

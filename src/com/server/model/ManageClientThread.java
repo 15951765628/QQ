@@ -16,5 +16,15 @@ public class ManageClientThread {
 	{
 		return (ServerConClient)hm.get(uid);
 	}
+	//返回当前在线的人数的情况
+	public static String getAllOnLineUserId(){
+		//使用迭代器完成
+		Iterator it=hm.keySet().iterator();
+		String res="";
+		while(it.hasNext()){
+			res+=it.next().toString()+" ";
+		}
+		return res;
+	}
 	
 }

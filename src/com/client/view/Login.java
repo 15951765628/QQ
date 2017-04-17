@@ -128,6 +128,10 @@ public class Login extends JFrame implements ActionListener{
 					//做一个Message
 					Message m=new Message();
 					m.setMesType(MessageType.mes_get_onLineFriends);
+					
+					//致命我要的是这个QQ的好友情况
+					m.setSender(u.getName());
+					
 					oos.writeObject(m);
 					
 				} catch (IOException e1) {

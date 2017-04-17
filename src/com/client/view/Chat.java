@@ -25,6 +25,7 @@ public class Chat extends JFrame implements MouseListener,ActionListener,KeyList
 	
 	String id;
 	String friend;
+	public String friends[];
 	
 	
 	
