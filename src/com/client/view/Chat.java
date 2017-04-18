@@ -23,6 +23,7 @@ public class Chat extends JFrame implements MouseListener,ActionListener,KeyList
 	JTextField jtf;
 	JButton jb;
 	JPanel jp;
+	JScrollPane jsp;
 	
 	String id;
 	String friend;
@@ -44,11 +45,13 @@ public class Chat extends JFrame implements MouseListener,ActionListener,KeyList
 		jb=new JButton("发送");
 		jb.addActionListener(this);
 		jp=new JPanel();
+		jsp=new JScrollPane(jta);
 		jp.add(jtf);
 		jp.add(jb);
+		//jsp.add(jta);
 		
-		this.addKeyListener(this);
-		this.add(jta,"Center");
+		jtf.addKeyListener(this);
+		this.add(jsp,"Center");
 		this.add(jp, "South");
 		this.setTitle(id+"正在和"+friend+"聊天");
 		this.setIconImage(new ImageIcon("images/1.png").getImage());
@@ -110,15 +113,16 @@ public class Chat extends JFrame implements MouseListener,ActionListener,KeyList
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode()==13){
-			sendMes();
-		}
+		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		//System.out.println(e.getKeyCode());
+		if(e.getKeyCode()==10){
+			sendMes();
+		}
 	}
 
 	@Override
@@ -149,24 +153,5 @@ public class Chat extends JFrame implements MouseListener,ActionListener,KeyList
 			jtf.setText("");
 		}
 	}
-//	@Override
-//	public void run() {
-//		// TODO Auto-generated method stub
-//		while(true){
-//			//读取Object[如果读不到就等待，]
-//			try {
-//				ObjectInputStream ois=new ObjectInputStream(ClientConServer.s.getInputStream());
-//				Message m=(Message)ois.readObject();
-//				//显示
-//				String info=m.getSender()+"对"+m.getGetter()+"说："+m.getCon()+"\r\n";
-//				this.jta.append(info);
-//				
-//				
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 
 }
