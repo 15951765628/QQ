@@ -40,11 +40,18 @@ public class ServerConClient extends Thread{
 					String res=ManageClientThread.getAllOnLineUserId();
 					Message m2=new Message();
 					m2.setCon(res);
-					m2.setGetter(m.getSender());
+					//m2.setGetter(m.getSender());
 					m2.setMesType(MessageType.mes_ret_onLoneFriends);
 					
-					ObjectOutputStream oos=new ObjectOutputStream(s.getOutputStream());
-					oos.writeObject(m2);
+					String[] friends=res.split(" ");
+					
+					for(String friend:friends){
+						m2.setGetter(friend);
+						ObjectOutputStream oos=new ObjectOutputStream
+								(ManageClientThread.getClientThread(friend).s.getOutputStream());
+						oos.writeObject(m2);
+					}
+					
 					
 				}
 			} catch (Exception e) {

@@ -20,4 +20,9 @@ public class ManageList {
 	public static List getList(String id){
 		return (List)hm.get(id);
 	}
+	
+	public static HashMap getHm(){
+		
+		return hm;
+	}
 }

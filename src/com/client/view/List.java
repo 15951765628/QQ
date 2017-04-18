@@ -34,9 +34,7 @@ public class List extends JFrame implements ActionListener,MouseListener{
 	JLabel[] jbls;
 	
 	private String id;
-	
-	
-	
+ 
 	
 	
 	public static void main(String[] args) {

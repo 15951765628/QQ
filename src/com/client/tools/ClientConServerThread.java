@@ -42,9 +42,10 @@ public class ClientConServerThread extends Thread{
 				}else if(m.getMesType().equals(MessageType.mes_ret_onLoneFriends)){
 					//请求在线好友
 					String con=m.getCon();
-					String friends[]=con.split(" ");
+					String[] friends=con.split(" ");
 					String getter=m.getGetter();
 					//修改相应的好友列表
+
 					List list = ManageList.getList(getter);
 					//更新在线好友
 					list.update(m);
