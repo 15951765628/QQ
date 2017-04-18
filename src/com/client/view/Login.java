@@ -136,7 +136,7 @@ public class Login extends JFrame implements ActionListener{
 					m.setMesType(MessageType.mes_get_onLineFriends);
 					
 					//指明我要的是这个QQ的好友情况
-					m.setGetter(u.getName());
+					m.setSender(u.getName());
 					
 					oos.writeObject(m);
 					

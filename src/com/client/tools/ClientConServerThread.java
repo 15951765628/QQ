@@ -4,10 +4,8 @@
 
 package com.client.tools;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-
 import com.client.view.Chat;
 import com.client.view.List;
 import com.common.Message;
@@ -20,7 +18,6 @@ public class ClientConServerThread extends Thread{
 	public ClientConServerThread(Socket s)
 	{
 		this.s=s;
-		
 	}
 	
 	public Socket getS() {
@@ -42,12 +39,11 @@ public class ClientConServerThread extends Thread{
 					Chat chat=ManageChat.getChat(m.getGetter()+" "+m.getSender());
 					//显示
 					chat.showMessage(m);
-				}else if(m.getMesType().equals(MessageType.mes_get_onLineFriends)){
+				}else if(m.getMesType().equals(MessageType.mes_ret_onLoneFriends)){
 					//请求在线好友
 					String con=m.getCon();
 					String friends[]=con.split(" ");
 					String getter=m.getGetter();
-					System.out.println(getter+"请求好友");
 					//修改相应的好友列表
 					List list = ManageList.getList(getter);
 					//更新在线好友

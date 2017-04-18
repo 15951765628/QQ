@@ -47,9 +47,9 @@ public class List extends JFrame implements ActionListener,MouseListener{
 	//更新在线的好友
 	public void update(Message m)
 	{
-		String onLineFriends[]=m.getCon().split(" ");
+		String[] onLineFriends=m.getCon().split(" ");
 		for(int i=0;i<onLineFriends.length;i++){
-			jbls[Integer.parseInt(onLineFriends[i])-1].setEnabled(true);;
+			jbls[Integer.parseInt(onLineFriends[i])-1].setEnabled(true);
 		}
 		
 	}
@@ -75,23 +75,23 @@ public class List extends JFrame implements ActionListener,MouseListener{
 		
 		//给jphy2,初始化50好友
 		jbls=new JLabel[50];
-		int i=0;
-		for(JLabel jb:jbls){
-			jb=new JLabel(++i+"",new ImageIcon("images/1.png"),JLabel.LEFT);
-			jb.setEnabled(false);
-			
-			if(jb.getText().equals(id)){
-				jb.setEnabled(true);
-			}
-			jb.addMouseListener(this);
-			jphy2.add(jb);
-			
-		}
-		
-//		for(int i=0;i<jbls.length;i++){
-//			jbls[i]=new JLabel(i+"",new ImageIcon("images/1.png"),JLabel.LEFT);
-//			jphy2.add(jbls[i]);
+//		int i=0;
+//		for(JLabel jb:jbls){
+//			System.out.println(1);
+//			jb=new JLabel(++i+"",new ImageIcon("images/1.png"),JLabel.LEFT);
+//			
 //		}
+		
+		for(int i=0;i<jbls.length;i++){
+			jbls[i]=new JLabel((i+1)+"",new ImageIcon("images/1.png"),JLabel.LEFT);
+			jbls[i].setEnabled(false);
+			
+			if(jbls[i].getText().equals(id)){
+				jbls[i].setEnabled(true);
+			}
+			jbls[i].addMouseListener(this);
+			jphy2.add(jbls[i]);
+		}
 		
 		
 		jphy3=new JPanel(new GridLayout(2,1));

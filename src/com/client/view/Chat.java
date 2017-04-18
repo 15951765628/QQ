@@ -15,6 +15,7 @@ import javax.swing.*;
 import com.client.model.ClientConServer;
 import com.client.tools.ManageClientConServerThread;
 import com.common.Message;
+import com.common.MessageType;
 
 public class Chat extends JFrame implements MouseListener,ActionListener,KeyListener{
 	
@@ -134,6 +135,7 @@ public class Chat extends JFrame implements MouseListener,ActionListener,KeyList
 		m.setGetter(friend);
 		m.setCon(jtf.getText().trim());
 		m.setSendTime(new java.util.Date().toString());
+		m.setMesType(MessageType.mes_comm_mes);
 		//发送给服务器
 		try {
 			ObjectOutputStream oos=new ObjectOutputStream
@@ -158,7 +160,6 @@ public class Chat extends JFrame implements MouseListener,ActionListener,KeyList
 //				//显示
 //				String info=m.getSender()+"对"+m.getGetter()+"说："+m.getCon()+"\r\n";
 //				this.jta.append(info);
-//						
 //				
 //				
 //			} catch (Exception e) {
