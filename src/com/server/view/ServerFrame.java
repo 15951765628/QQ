@@ -38,11 +38,6 @@ public class ServerFrame extends JFrame implements ActionListener{
 		this.setSize(500, 400);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
-		
-		
-		
-		
-		
 	}
 
 	@Override
