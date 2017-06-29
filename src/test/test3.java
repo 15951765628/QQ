@@ -40,6 +40,7 @@ public class test3{
             ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
             System.out.println(((ResultMessage<UserTable>)isr.readObject()).getData().getId());
 
+
             s.close();
 
         } catch (IOException e) {
