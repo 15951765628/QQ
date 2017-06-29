@@ -42,12 +42,12 @@ public class TestServer1 extends JFrame implements ActionListener{
 		try {
 			ServerSocket ss=new ServerSocket(9999);
 			Socket s=ss.accept();
-			
-			
+
 			InputStreamReader isr=new InputStreamReader(s.getInputStream());
 			BufferedReader br=new BufferedReader(isr);
 			pw=new PrintWriter(s.getOutputStream(),true);
 			while(true){
+
 				String info = br.readLine();
 				
 				jta.append("客户端说："+info+"\r\n");

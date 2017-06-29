@@ -21,7 +21,19 @@ public class Server {
 	public Server(){
 		try {
 				System.out.println("启动服务器");
-				ServerSocket ss=new ServerSocket(9999);
+
+				ServerSocket ss = new ServerSocket();
+				for (int port = 8066;port<8076;port++){
+					try {
+						ss=new ServerSocket(port);
+					}catch (IOException e){
+						System.out.println("启动端口"+port+"失败");
+						continue;
+					}
+					System.out.println("启动"+port+"成功");
+					break;
+				}
+
 				while(true){
 				Socket s=ss.accept();//阻塞，等待连接
 				//接受客户端发来的信息
@@ -53,6 +65,7 @@ public class Server {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+
 			// TODO: handle exception
 		}
 	}
