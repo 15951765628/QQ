@@ -6,6 +6,10 @@ import com.hibernate.mapping.ProjectTable;
 import com.hibernate.mapping.UserTable;
 import com.spasvo.manualtest.dao.module.ComponentBean;
 import net.sf.json.JSONObject;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Zip;
+import org.apache.tools.ant.types.FileSet;
 import org.junit.Test;
 import tc.service.bean.ResultMessage;
 import java.io.*;
@@ -107,8 +111,8 @@ public class test3{
             resultMessage.setType("MR_comList");
             oos.writeObject(resultMessage);
             ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
-            for (ProjectTable projectTable:((ResultMessage<List<ProjectTable>>)isr.readObject()).getData()){
-                System.out.println(projectTable.getName()+"      id:"+projectTable.getId());
+            for (ProjectTable projectTabdle:((ResultMessage<List<ProjectTable>>)isr.readObject()).getData()){
+              //  System.out.println(projectTable.getName()+"      id:"+projectTable.getId());
             }
 
 
@@ -121,12 +125,16 @@ public class test3{
     }
 
     /**
-     * 检查传递文件
+     * 检查传递文件，选择文件
      */
 
     @Test
-    public void testUpFile(){
-        try {
+    public void testUpFile() throws IOException {
+        File directory = new File("");// 参数为空
+        String courseFile = directory.getCanonicalPath();
+        System.out.println(courseFile);
+        System.out.println(this.getClass().getResource("").getPath());
+        /*try {
             ResultMessage resultMessage = new ResultMessage();
             resultMessage.setType("MR_upScript");
             Socket s = new Socket("127.0.0.1", 10088);
@@ -141,13 +149,60 @@ public class test3{
             while((length=bi.read(b))>0){
                 os.write(b, 0, length);
             }
+
             s.shutdownOutput();
+
+
+            bi=new BufferedInputStream(new FileInputStream("d:\\output.xml"));
+            os=s.getOutputStream();
+            while((length=bi.read(b))>0){
+                os.write(b, 0, length);
+            }
+
+            s.shutdownOutput();
+
+
 
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
+    /**
+     *
+     * 测试压缩文件
+     */
+    @Test
+    public  void testZip() throws BuildException, RuntimeException {
+        File file = new File("C:\\Users\\Administrator\\Documents\\cc\\iiImage");
+        if (!file.exists()) {
+            throw new RuntimeException("source file or directory  does not exist.");
+        }
+
+        Project proj = new Project();
+        FileSet fileSet = new FileSet();
+        fileSet.setProject(proj);
+        // 判断是目录还是文件
+        if (file.isDirectory()) {
+            fileSet.setDir(file);
+            // ant中include/exclude规则在此都可以使用
+            // 比如:
+            // fileSet.setExcludes("**/*.txt");
+            // fileSet.setIncludes("**/*.xls");
+        } else {
+            fileSet.setFile(file);
+        }
+
+        Zip zip = new Zip();
+        zip.setProject(proj);
+        zip.setDestFile(new File("C:\\Users\\Administrator\\Documents\\cc\\iiImage.zip"));
+        zip.addFileset(fileSet);
+        zip.setEncoding("GBK");
+        zip.execute();
+
+        System.out.println("compress successed.");
+    }
+
 
     /**
      * 检查名称是否重复MR_addComment
@@ -292,6 +347,9 @@ public class test3{
 
 
     }
+
+
+
 
 
 
