@@ -32,9 +32,12 @@ public class FileChooser extends JFrame implements ActionListener{
         JFileChooser jfc=new JFileChooser();
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
         jfc.setMultiSelectionEnabled(true);
-        jfc.showDialog(new JLabel(), "选择");
 
+        jfc.showDialog(new JLabel(), "选择");
         File[] file=jfc.getSelectedFiles();
+        for (File item : file){
+            System.out.println(item.getPath());
+        }
 
     }
 

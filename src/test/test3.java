@@ -130,51 +130,58 @@ public class test3{
 
     @Test
     public void testUpFile() throws IOException {
-        File directory = new File("");// 参数为空
-        String courseFile = directory.getCanonicalPath();
-        System.out.println(courseFile);
-        System.out.println(this.getClass().getResource("").getPath());
-        /*try {
-            ResultMessage resultMessage = new ResultMessage();
-            resultMessage.setType("MR_upScript");
-            Socket s = new Socket("127.0.0.1", 10088);
-            ObjectOutputStream oos=new ObjectOutputStream(s.getOutputStream());
-            oos.writeObject(resultMessage);
 
-            String path = "d:\\page.gif";
-            BufferedInputStream bi=new BufferedInputStream(new FileInputStream(path));
-            OutputStream os=s.getOutputStream();
-            byte[] b=new byte[1024];
-            int length=0;
-            while((length=bi.read(b))>0){
-                os.write(b, 0, length);
+        try {
+            JSONObject json =new JSONObject();
+            JSONObject jsonData = new JSONObject();
+            json.put("type","MR_upScript");
+            jsonData.put("dataName","23333333333");
+            jsonData.put("projectId",2);
+
+            Socket s;
+            ObjectOutputStream oos;
+
+            String scriptName="C:\\Users\\Administrator\\Documents\\test\\A";
+            this.testZip(scriptName+"Image",scriptName+"Image.zip");
+            String[] fileArr={scriptName+".bsh",scriptName+".xml",scriptName+".xls",scriptName+"Image.zip"};
+
+
+            for (String filePath:fileArr){
+                s = new Socket("127.0.0.1", 10088);
+                oos=new ObjectOutputStream(s.getOutputStream());
+                jsonData.put("fileName",filePath.substring(filePath.lastIndexOf("\\")+1,filePath.length()));
+                json.put("data",jsonData);
+                oos.writeObject(json.toString());
+                BufferedInputStream bi=new BufferedInputStream(new FileInputStream(filePath));
+                OutputStream os=s.getOutputStream();
+                byte[] b=new byte[1024*1024];
+                int length=0;
+                while((length=bi.read(b))>0){
+                    os.write(b, 0, length);
+                }
+
+                s.shutdownOutput();
             }
 
-            s.shutdownOutput();
-
-
-            bi=new BufferedInputStream(new FileInputStream("d:\\output.xml"));
-            os=s.getOutputStream();
-            while((length=bi.read(b))>0){
-                os.write(b, 0, length);
-            }
-
-            s.shutdownOutput();
+            File zipFile=new File(scriptName+"Image.zip");
+            zipFile.delete();
 
 
 
 
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
     /**
      *
      * 测试压缩文件
      */
-    @Test
-    public  void testZip() throws BuildException, RuntimeException {
-        File file = new File("C:\\Users\\Administrator\\Documents\\cc\\iiImage");
+   // @Test
+    public  void testZip(String inPath,String outPath) throws BuildException, RuntimeException {
+
+        File file = new File(inPath);
         if (!file.exists()) {
             throw new RuntimeException("source file or directory  does not exist.");
         }
@@ -195,7 +202,7 @@ public class test3{
 
         Zip zip = new Zip();
         zip.setProject(proj);
-        zip.setDestFile(new File("C:\\Users\\Administrator\\Documents\\cc\\iiImage.zip"));
+        zip.setDestFile(new File(outPath));
         zip.addFileset(fileSet);
         zip.setEncoding("GBK");
         zip.execute();
@@ -347,10 +354,5 @@ public class test3{
 
 
     }
-
-
-
-
-
 
 }
