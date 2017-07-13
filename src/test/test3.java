@@ -231,6 +231,7 @@ public class test3{
             param.put("name", "来自北方的组件");
             //版本号
             param.put("version","");
+
             //详细描述
             param.put("description", "");
             //继承的脚本的ID，没有的是0
