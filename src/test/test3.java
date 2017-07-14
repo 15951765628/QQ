@@ -2,9 +2,9 @@ package test;
 
 
 
-import com.hibernate.mapping.ProjectTable;
-import com.hibernate.mapping.UserTable;
+
 import com.spasvo.manualtest.dao.module.ComponentBean;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -14,8 +14,7 @@ import org.junit.Test;
 import tc.service.bean.ResultMessage;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by Administrator on 2017.06.22.
@@ -31,20 +30,16 @@ public class test3{
         try {
             Socket s = new Socket("127.0.0.1", 10088);
             ObjectOutputStream oos= new ObjectOutputStream(s.getOutputStream());
-            UserTable userTable = new UserTable();
+            JSONObject result=new JSONObject();
+            JSONObject jsonData = new JSONObject();
+            jsonData.put("username","zhuf2");
+            jsonData.put("password","111111");
 
-            userTable.setUsername("zhuf2");
-            userTable.setPassword("111111");
-            userTable.setId(4);
-
-
-
-            ResultMessage<UserTable> resultMessage=new ResultMessage<UserTable>();
-            resultMessage.setData(userTable);
-            resultMessage.setType("MR_login");
-            oos.writeObject(resultMessage);
+            result.put("data",jsonData);
+            result.put("type","MR_login");
+            oos.writeObject(result.toString());
             ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
-            System.out.println(((ResultMessage<UserTable>)isr.readObject()).getData().getId());
+            System.out.println((JSONObject.fromObject((String)isr.readObject())));
 
 
             s.close();
@@ -64,21 +59,21 @@ public class test3{
         try {
             Socket s = new Socket("127.0.0.1", 10088);
             ObjectOutputStream oos= new ObjectOutputStream(s.getOutputStream());
-            UserTable userTable = new UserTable();
+            JSONObject result=new JSONObject();
+            JSONObject jsonData = new JSONObject();
+            jsonData.put("username","zhuf2");
+            jsonData.put("password","111111");
+            jsonData.put("id",4);
 
-            userTable.setUsername("zhuf2");
-            userTable.setPassword("111111");
-            userTable.setId(4);
-
-
-
-            ResultMessage<UserTable> resultMessage=new ResultMessage<UserTable>();
-            resultMessage.setData(userTable);
-            // resultMessage.setType("MR_login");
-            resultMessage.setType("MR_projectList");
-            oos.writeObject(resultMessage);
+            result.put("data",jsonData);
+            result.put("type","MR_projectList");
+            oos.writeObject(result.toString());
             ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
-            System.out.println(((ResultMessage<List<ProjectTable>>)isr.readObject()).getData().get(0).getId());
+            JSONArray resultDataList=JSONObject.fromObject((String)isr.readObject()).getJSONArray("data");
+            for (int i=0;i<resultDataList.size();i++){
+                System.out.println(resultDataList.getJSONObject(i).getString("name"));
+            }
+
 
             s.close();
 
@@ -97,22 +92,33 @@ public class test3{
         try {
             Socket s = new Socket("127.0.0.1", 10088);
             ObjectOutputStream oos= new ObjectOutputStream(s.getOutputStream());
-            List<Integer> list = new ArrayList<Integer>();
-            list.add(0);
-            list.add(2);
+            JSONObject jsonData=new JSONObject();
+            jsonData.put("parentId",1);
+            jsonData.put("projectId",2);
+//            List<Integer> list = new ArrayList<Integer>();
+//            list.add(0);
+//            list.add(2);
 
           //  list.add(4);
           // list.add(2);
 
 
 
-            ResultMessage resultMessage=new ResultMessage<>();
-            resultMessage.setData(list);
-            resultMessage.setType("MR_comList");
-            oos.writeObject(resultMessage);
+            JSONObject resultMessage=new JSONObject();
+            resultMessage.put("data",jsonData);
+            resultMessage.put("type","MR_comList");
+            oos.writeObject(resultMessage.toString());
             ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
-            for (ProjectTable projectTabdle:((ResultMessage<List<ProjectTable>>)isr.readObject()).getData()){
-              //  System.out.println(projectTable.getName()+"      id:"+projectTable.getId());
+            JSONObject result = JSONObject.fromObject((String)isr.readObject());
+            JSONArray resultDataList = result.getJSONArray("data");
+            for (int i=0;i<resultDataList.size();i++){
+                if (resultDataList.getJSONObject(i).has("dataName"))
+              System.out.println(resultDataList.getJSONObject(i).getString("dataName")+"   name:"+resultDataList.getJSONObject(i).getString("name"));
+                else
+                {
+                    System.out.println("groupname:"+resultDataList.getJSONObject(i).getString("name"));
+                }
+               // System.out.println(resultDataList.getJSONObject(i).getString("id"));
             }
 
 
@@ -146,30 +152,28 @@ public class test3{
             String[] fileArr={scriptName+".bsh",scriptName+".xml",scriptName+".xls",scriptName+"Image.zip"};
 
 
-            for (String filePath:fileArr){
+            for (String filePath:fileArr) {
                 s = new Socket("127.0.0.1", 10088);
-                oos=new ObjectOutputStream(s.getOutputStream());
-                jsonData.put("fileName",filePath.substring(filePath.lastIndexOf("\\")+1,filePath.length()));
-                json.put("data",jsonData);
+                oos = new ObjectOutputStream(s.getOutputStream());
+                jsonData.put("fileName", filePath.substring(filePath.lastIndexOf("\\") + 1, filePath.length()));
+                json.put("data", jsonData);
                 oos.writeObject(json.toString());
-                BufferedInputStream bi=new BufferedInputStream(new FileInputStream(filePath));
-                OutputStream os=s.getOutputStream();
-                byte[] b=new byte[1024*1024];
-                int length=0;
-                while((length=bi.read(b))>0){
+                BufferedInputStream bi = new BufferedInputStream(new FileInputStream(filePath));
+                System.out.println(filePath);
+                OutputStream os = s.getOutputStream();
+                byte[] b = new byte[1024 * 1024];
+                int length = 0;
+                while ((length = bi.read(b)) > 0) {
                     os.write(b, 0, length);
                 }
 
+                // ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
+                // JSONObject rm=JSONObject.fromObject((String)isr.readObject());
+                // System.out.println(rm.getString("data"));
                 s.shutdownOutput();
+                //Thread.sleep(100);
+
             }
-
-            File zipFile=new File(scriptName+"Image.zip");
-            zipFile.delete();
-
-
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -184,6 +188,9 @@ public class test3{
         File file = new File(inPath);
         if (!file.exists()) {
             throw new RuntimeException("source file or directory  does not exist.");
+        }
+        if((new File(outPath)).exists()){
+            (new File(outPath)).delete();
         }
 
         Project proj = new Project();
@@ -255,14 +262,13 @@ public class test3{
             //脚本所在的位置：D:\\TC\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\TestLab\\file\\2\\components
             param.put("path", path);
 
-            ResultMessage<String> resultMessage=new ResultMessage<String>();
-            String abc = param.toString();
-            resultMessage.setData(abc);
-            resultMessage.setType("MR_addComment");
+            JSONObject result=new JSONObject();
+            result.put("data",param);
+            result.put("type","MR_addComment");
 
-            oos.writeObject(resultMessage);
-//            ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
-//            System.out.println(((ResultMessage)isr.readObject()).getData());
+            oos.writeObject(result.toString());
+            ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
+            System.out.println(JSONObject.fromObject((String)isr.readObject()));
 
 
 
@@ -270,6 +276,8 @@ public class test3{
             s.close();
 
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -327,14 +335,17 @@ public class test3{
         param.put("userName", "zhuf2");
         //获取当前项目ID
         param.put("projectId","2");
+        JSONObject result=new JSONObject();
+        result.put("data",param);
+        result.put("type","MR_updateComponent");
 
-        ResultMessage<String> resultMessage=new ResultMessage<String>();
-        String abc = param.toString();
-        resultMessage.setData(abc);
-        resultMessage.setType("MR_updateComponent");
+
+
 
         try {
-            oos.writeObject(resultMessage);
+            oos.writeObject(result.toString());
+            ObjectInputStream isr = new ObjectInputStream(s.getInputStream());
+            System.out.println(JSONObject.fromObject((String)isr.readObject()));
         } catch (IOException e) {
             e.printStackTrace();
         }
