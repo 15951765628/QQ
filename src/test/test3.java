@@ -358,6 +358,7 @@ public class test3{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         try {
             s.close();
         } catch (IOException e) {
